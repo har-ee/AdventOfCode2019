@@ -1,3 +1,8 @@
+from enum import Enum
+class Mode(Enum):
+    CHECK = 1
+    LOG = 2
+
 f = open("./input", "r")
 input = [[(a[0], int(a[1:])) for a in line.split(sep=',')]
          for line in f.read().split(sep='\n')]
@@ -20,13 +25,13 @@ def log(x, y):
 def movex(coords, number, mode):
     xold, y = coords
     for x in range(xold, xold + number):
-        check(x,y) if mode == 'check' else log(x,y)
+        check(x,y) if mode == Mode.CHECK else log(x,y)
     return (xold + number, y)
 
 def movey(coords, number, mode):
     x, yold = coords
     for y in range(yold, yold + number):
-        check(x,y) if mode == 'check' else log(x,y)
+        check(x,y) if mode == Mode.CHECK else log(x,y)
     return (x, yold + number)
 
 def move(coords, direction, number, mode):
@@ -40,11 +45,11 @@ def move(coords, direction, number, mode):
     
 coords = (0,0)
 for instr in input[0]:
-    coords = move(coords, instr[0], instr[1], 'log')
+    coords = move(coords, instr[0], instr[1], Mode.LOG)
 
 coords = (0,0)
 
 for instr in input[1]:
-    coords = move(coords, instr[0], instr[1], 'check')
+    coords = move(coords, instr[0], instr[1], Mode.CHECK)
 
 print(min(map(lambda x: abs(x[0]) + abs(x[1]), intersections)))
